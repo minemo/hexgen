@@ -25,10 +25,10 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.9.1
         with:
-          cache: 'yarn install && yarn build'
+          cache: 'yarn'
       - name: Build static files
         id: build
-        run: 'yarn build'
+        run: 'yarn install && yarn build'
 
       - name: Upload static files as artifact
         id: deployment
