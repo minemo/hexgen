@@ -9,9 +9,8 @@ The drawing logic itself is pretty basic, but I plan to add a couple of features
 - [ ] Gradients
 - [ ] More sophisticated circles
 - [ ] Export to SVG/PNG
-- [ ] 
+- [ ] maybe more?
 
 ## How
 
-First have [NodeJS](https://nodejs.org/en/download) and [Yarn](https://yarnpkg.com/getting-started/install) installed, then just run `yarn install && yarn build`.
-The output will be in the dist folder and should be usable as is.
+First have [NodeJS](https://nodejs.org/en/download) and [Yarn](https://yarnpkg.com/getting-started/install) installed, then just run `yarn install && yarn build`. The output will be in the dist folder and should be usable as is.
