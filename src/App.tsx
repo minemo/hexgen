@@ -66,22 +66,22 @@ function App() {
     if (["func", "args"].every(x => Object.keys(object).includes(x))) {
       // if object is function application
       let sharpness = 0;
-      if (object["func"].constructor == String) {
+      if ((object["func"] as object).constructor == String) {
         sharpness = calcTextSharpness(object["func"] as string);
       } else {
         generateGeomRecurse(object["func"] as Record<string, string | unknown>, geomGroup, circlemult, scalemult * 0.4, weightmult, centerpoint);
-        const iterate = (obj: Record<string, unknown>) => {
+        const iterate = (obj: Record<string, string | unknown>) => {
           for (const key in obj) {
             if (typeof obj[key] === 'object' && obj[key] !== null && key != 'var') {
               generateGeomRecurse(obj[key] as Record<string, string | unknown>, geomGroup, circlemult, scalemult * 0.4, weightmult, centerpoint);
-              iterate(obj[key]);
+              iterate(obj[key] as Record<string, string | unknown>);
             } else if (key == "var") {
               return calcTextSharpness(obj[key] as string);
             }
           }
           return 1
         }
-        sharpness = iterate(object["func"]);
+        sharpness = iterate(object["func"] as Record<string, string | unknown>);
       }
       let meanrad = 0;
       console.log(`${JSON.stringify(object["func"])} -> ${sharpness} -> ${Math.round(sharpness * circlemult)} circles`);
@@ -101,7 +101,7 @@ function App() {
       });
       pts.forEach((p, i) => {
         const v = (object["args"] as Array<unknown>)[i];
-        if (v.constructor == String) {
+        if ((v as object).constructor == String) {
           sharpness = calcTextSharpness(v as string);
           geomGroup.add(circle(add2([], p, centerpoint), 1 + (sharpness * 29) * scalemult, { stroke: "aquamarine", fill: "#232323", weight: 0.5 * weightmult }));
         } else {
@@ -137,7 +137,6 @@ function App() {
     generateGeomRecurse(parseRes.data, funcGeom, circlemult, 1, 1, vec2(50, 50));
 
     const svgtxt = asSvg(svgDoc({ viewBox: "0 0 100 100", height: "50%", width: "50%" }, funcGeom));
-    // console.log(svgtxt);
     if (svgContRef.current) {
       svgContRef.current!.innerHTML = svgtxt;
     }
