@@ -70,7 +70,18 @@ function App() {
         sharpness = calcTextSharpness(object["func"] as string);
       } else {
         generateGeomRecurse(object["func"] as Record<string, string | unknown>, geomGroup, circlemult, scalemult * 0.4, weightmult, centerpoint);
-        sharpness = calcTextSharpness((object["func"] as Record<string, string | unknown>)["var"] as string);
+        const iterate = (obj: Record<string, unknown>) => {
+          for (const key in obj) {
+            if (typeof obj[key] === 'object' && obj[key] !== null && key != 'var') {
+              generateGeomRecurse(obj[key] as Record<string, string | unknown>, geomGroup, circlemult, scalemult * 0.4, weightmult, centerpoint);
+              iterate(obj[key]);
+            } else if (key == "var") {
+              return calcTextSharpness(obj[key] as string);
+            }
+          }
+          return 1
+        }
+        sharpness = iterate(object["func"]);
       }
       let meanrad = 0;
       console.log(`${JSON.stringify(object["func"])} -> ${sharpness} -> ${Math.round(sharpness * circlemult)} circles`);
